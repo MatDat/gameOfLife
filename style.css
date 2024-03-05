@@ -13,6 +13,31 @@ h1 {
   font-size: 65px;
   text-shadow: 1px 2px 0 #000;
 }
+.abortButton {
+  padding: 10px 25px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  font-size: 32px;
+  cursor: pointer;
+  background-color: red;
+  color: white;
+}
+.abortButton:hover {
+  background-color: darkred;
+}
+.reviveButton {
+  padding: 10px 25px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  margin-left: 15px;
+  font-size: 32px;
+  cursor: pointer;
+  background-color: green;
+  color: white;
+}
+.reviveButton:hover {
+  background-color: darkgreen;
+}
 #boardContainer {
   display: grid;
   grid-template-columns: repeat(var(--boardWidth), max-content);
