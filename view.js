@@ -1,58 +1,39 @@
 export default class View {
-  controller;
-
   constructor(controller) {
     this.controller = controller;
   }
 
   boardSetup(boardWidth, boardHeight) {
     let boardContainer = document.querySelector("#boardContainer");
+    boardContainer.innerHTML = ""; // Rydder tidligere board før ny oprettelse
     boardContainer.style.setProperty("--boardWidth", boardWidth);
+    boardContainer.style.setProperty("--boardHeight", boardHeight);
 
     for (let i = 0; i < boardWidth; i++) {
-      let row = document.createElement("div");
-      row.classList.add("row");
-
       for (let j = 0; j < boardHeight; j++) {
         let cell = document.createElement("div");
         cell.classList.add("cell");
-
-        cell.setAttribute("data-row", j);
-        cell.setAttribute("data-col", i);
-
-        row.appendChild(cell);
+        cell.setAttribute("data-row", i);
+        cell.setAttribute("data-col", j);
+        cell.addEventListener("click", (e) =>
+          this.controller.toggleCellState(i, j)
+        );
+        boardContainer.appendChild(cell);
       }
-      boardContainer.appendChild(row);
     }
   }
 
-  makeBoardClick() {
-    document
-      .querySelector("#boardContainer")
-      .addEventListener("click", this.boardClicked.bind(this));
-  }
-
-  boardClicked(event) {
-    const cell = event.target;
-
-    const rowIndex = parseInt(cell.getAttribute("data-row"));
-    const colIndex = parseInt(cell.getAttribute("data-col"));
-
-    console.log(`Cell clicked: (row: ${rowIndex}, col: ${colIndex})`);
-    console.log(
-      `Cell value: ` + this.controller.model.readFromCell(rowIndex, colIndex)
-    );
-  }
-
-  updateView(boardState) {
-    const boardContainer = document.querySelector("#boardContainer");
-
-    for (let i = 0; i < boardState.length; i++) {
-      for (let j = 0; j < boardState[0].length; j++) {
+  updateView(model) {
+    for (let i = 0; i < model.length; i++) {
+      for (let j = 0; j < model[i].length; j++) {
         const cell = document.querySelector(
-          `[data-row="${j}"][data-col="${i}"]`
+          `[data-row="${i}"][data-col="${j}"]`
         );
-        cell.classList.toggle("alive", boardState[i][j] === 1);
+        if (model[i][j] === 1) {
+          cell.classList.add("alive");
+        } else {
+          cell.classList.remove("alive");
+        }
       }
     }
   }

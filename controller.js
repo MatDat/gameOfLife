@@ -1,31 +1,45 @@
 import View from "./view.js";
 import Model from "./model.js";
-("use strict");
 
 export default class Controller {
-  boardWidth = 30;
-  boardHeight = 30;
-
-  model;
-  view;
   constructor() {
-    this.model = new Model();
+    this.boardWidth = 30;
+    this.boardHeight = 30;
+    this.model = new Model(this.boardWidth, this.boardHeight);
     this.view = new View(this);
-    console.log("Juupiiii");
+    this.isPaused = true;
   }
 
-  start() {
-    console.log("Javascript is running!");
+  init() {
+    document
+      .getElementById("startButton")
+      .addEventListener("click", () => this.startGame());
+    document
+      .getElementById("toggleButton")
+      .addEventListener("click", () => this.toggleGame());
     this.view.boardSetup(this.boardWidth, this.boardHeight);
-    this.view.makeBoardClick();
+  }
+
+  startGame() {
+    this.isPaused = false;
+    this.model.randomizeModel();
+    this.view.updateView(this.model.model);
     this.tick();
   }
 
   tick() {
-    // UPDATER LIST, incl view
-    setTimeout(this.tick, 500);
+    if (!this.isPaused) {
+      this.model.updateModel();
+      this.view.updateView(this.model.model);
+      setTimeout(() => this.tick(), 500);
+    }
+  }
+
+  toggleGame() {
+    this.isPaused = !this.isPaused;
+    if (!this.isPaused) this.tick();
   }
 }
 
 let controller = new Controller();
-window.addEventListener("load", () => controller.start());
+window.addEventListener("load", () => controller.init()); // Ændret til at kalde init
