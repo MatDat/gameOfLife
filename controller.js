@@ -42,4 +42,4 @@ export default class Controller {
 }
 
 let controller = new Controller();
-window.addEventListener("load", () => controller.init()); // Ændret til at kalde init
+window.addEventListener("load", () => controller.init());
