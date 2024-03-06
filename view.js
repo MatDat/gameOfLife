@@ -1,23 +1,22 @@
 export default class View {
   constructor(controller) {
     this.controller = controller;
+    //this.model = model;
   }
 
   boardSetup(boardWidth, boardHeight) {
     let boardContainer = document.querySelector("#boardContainer");
-    boardContainer.innerHTML = ""; // Rydder tidligere board før ny oprettelse
+    boardContainer.innerHTML = "";
+    // Overfører variablerne til CSS
     boardContainer.style.setProperty("--boardWidth", boardWidth);
     boardContainer.style.setProperty("--boardHeight", boardHeight);
 
-    for (let i = 0; i < boardWidth; i++) {
-      for (let j = 0; j < boardHeight; j++) {
+    for (let i = 0; i < boardHeight; i++) {
+      for (let j = 0; j < boardWidth; j++) {
         let cell = document.createElement("div");
         cell.classList.add("cell");
         cell.setAttribute("data-row", i);
         cell.setAttribute("data-col", j);
-        cell.addEventListener("click", (e) =>
-          this.controller.toggleCellState(i, j)
-        );
         boardContainer.appendChild(cell);
       }
     }

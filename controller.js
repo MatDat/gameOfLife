@@ -5,7 +5,7 @@ export default class Controller {
   constructor() {
     this.boardWidth = 30;
     this.boardHeight = 30;
-    this.model = new Model(this.boardWidth, this.boardHeight);
+    this.model = new Model(this.boardHeight, this.boardWidth);
     this.view = new View(this);
     this.isPaused = true;
   }
@@ -17,6 +17,9 @@ export default class Controller {
     document
       .getElementById("toggleButton")
       .addEventListener("click", () => this.toggleGame());
+    document
+      .getElementById("killButton")
+      .addEventListener("click", () => this.restartGame());
     this.view.boardSetup(this.boardWidth, this.boardHeight);
   }
 
@@ -25,6 +28,11 @@ export default class Controller {
     this.model.randomizeModel();
     this.view.updateView(this.model.model);
     this.tick();
+    console.log("Start button clicked!");
+  }
+
+  restartGame() {
+    window.location.reload();
   }
 
   tick() {
@@ -38,6 +46,7 @@ export default class Controller {
   toggleGame() {
     this.isPaused = !this.isPaused;
     if (!this.isPaused) this.tick();
+    console.log("Pause clicked!");
   }
 }
 

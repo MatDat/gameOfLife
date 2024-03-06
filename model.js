@@ -1,5 +1,5 @@
 export default class Model {
-  constructor(boardWidth = 30, boardHeight = 30) {
+  constructor(boardHeight, boardWidth) {
     this.boardWidth = boardWidth;
     this.boardHeight = boardHeight;
     this.model = this.initializeModel();
@@ -7,9 +7,9 @@ export default class Model {
 
   initializeModel() {
     let model = [];
-    for (let i = 0; i < this.boardWidth; i++) {
+    for (let i = 0; i < this.boardHeight; i++) {
       model[i] = [];
-      for (let j = 0; j < this.boardHeight; j++) {
+      for (let j = 0; j < this.boardWidth; j++) {
         model[i][j] = 0;
       }
     }
@@ -17,8 +17,8 @@ export default class Model {
   }
 
   randomizeModel() {
-    for (let i = 0; i < this.boardWidth; i++) {
-      for (let j = 0; j < this.boardHeight; j++) {
+    for (let i = 0; i < this.boardHeight; i++) {
+      for (let j = 0; j < this.boardWidth; j++) {
         if (Math.random() < 0.15) {
           this.model[i][j] = 1;
         } else {
@@ -34,16 +34,16 @@ export default class Model {
     // Hvis cellen er levende
     if (this.model[row][col] === 1) {
       if (liveNeighbors === 2 || liveNeighbors === 3) {
-        return 1; // Celle forbliver levende
+        return 1; // Celle lever videre
       } else {
-        return 0; // Celle bliver død
+        return 0; // Celle dør
       }
     } else {
       // Hvis cellen er død
       if (liveNeighbors === 3) {
-        return 1; // Celle bliver levende
+        return 1; // Celle lever videre
       } else {
-        return 0; // Celle forbliver død
+        return 0; // Celle dør
       }
     }
   }
@@ -52,11 +52,21 @@ export default class Model {
     let count = 0;
     for (let i = -1; i <= 1; i++) {
       for (let j = -1; j <= 1; j++) {
-        if (i === 0 && j === 0) continue;
-        const x = row + i,
-          y = col + j;
-        if (x >= 0 && x < this.boardWidth && y >= 0 && y < this.boardHeight) {
-          count += this.model[x][y];
+        if (i === 0 && j === 0) {
+          continue;
+        }
+        // Kigger på den potentielle nabo
+        const neighborRow = row + i;
+        const neighborCol = col + j;
+        // Tjekker om naboen er indenfor brættets grænser
+        const isWithinBoard =
+          neighborRow >= 0 &&
+          neighborRow < this.boardHeight &&
+          neighborCol >= 0 &&
+          neighborCol < this.boardWidth;
+        // Tæller naboen, hvis den er indenfor grænserne og levende
+        if (isWithinBoard && this.model[neighborRow][neighborCol] === 1) {
+          count++;
         }
       }
     }
@@ -64,17 +74,16 @@ export default class Model {
   }
 
   updateModel() {
+    // Laver et nyt tomt spillebræt
     let nextGen = this.initializeModel();
-    for (let i = 0; i < this.boardWidth; i++) {
-      for (let j = 0; j < this.boardHeight; j++) {
+    for (let i = 0; i < this.boardHeight; i++) {
+      for (let j = 0; j < this.boardWidth; j++) {
+        // Tjekker og bestemmer hver enkel celle state
         nextGen[i][j] = this.applyRules(i, j);
       }
     }
+    // Opdaterer model med den nye gamestate
     this.model = nextGen;
-  }
-
-  toggleCell(row, col) {
-    this.model[row][col] = this.model[row][col] === 1 ? 0 : 1;
   }
 
   readFromCell(row, col) {
