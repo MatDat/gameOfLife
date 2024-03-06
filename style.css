@@ -20,13 +20,13 @@ h1 {
   border-collapse: collapse;
 }
 .cell {
-  width: 32px;
-  height: 32px;
+  width: 13px;
+  height: 13px;
   background-color: white;
   border: 2px outset darkgray;
 }
 .cell.alive {
-  background-color: #666;
+  background-color: #88bb88;
 }
 
 button {
@@ -34,7 +34,7 @@ button {
   margin-bottom: 15px;
   margin-top: 15px;
   margin-left: 15px;
-  font-size: 32px;
+  font-size: 16px;
   cursor: pointer;
   background-color: green;
   color: white;

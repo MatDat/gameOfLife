@@ -1,7 +1,6 @@
 export default class View {
   constructor(controller) {
     this.controller = controller;
-    //this.model = model;
   }
 
   boardSetup(boardWidth, boardHeight) {

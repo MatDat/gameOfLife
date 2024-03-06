@@ -3,8 +3,8 @@ import Model from "./model.js";
 
 export default class Controller {
   constructor() {
-    this.boardWidth = 30;
-    this.boardHeight = 30;
+    this.boardWidth = 60;
+    this.boardHeight = 32;
     this.model = new Model(this.boardHeight, this.boardWidth);
     this.view = new View(this);
     this.isPaused = true;
